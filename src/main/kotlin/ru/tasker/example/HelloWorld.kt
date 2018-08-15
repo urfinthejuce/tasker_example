@@ -38,7 +38,7 @@ class HelloController(@Autowired val repo: CounterRepo) {
     return ModelAndView("index", map)
   }
 
-  @GetMapping("/counters")
+  @GetMapping("/counter")
   fun counters(): ModelAndView {
     val model= repo.findAll().map( {it})
     return ModelAndView("counters", Collections.singletonMap("counters", model))
