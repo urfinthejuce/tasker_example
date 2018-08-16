@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Здравствуйте!</title>
+</head>
+<body>
+{{#login}}
+<p>Ваш логин: {{login}}</p>
+<p><a href="/logout">Выйти</a></p>
+{{/login}}
+{{^login}}
+<form action="/login" method="post" modelArrtibute="Credentials">
+    <h2>Представьтесь, пожалуйста!</h2>
+    <p>Логин: <input type="text" size="40" name="login"></p>
+    <p>Пароль: <input type="password" size="40" name="password"></p>
+    <button type="submit">Войти</button>
+</form>
+{{/login}}
+</body>
+</html>

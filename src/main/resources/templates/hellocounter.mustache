@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>С кем мы поздоровались</title>
+</head>
+<body>
+{{#counters}}
+<i>{{name}}</i> : {{counter}}<br>
+{{/counters}}
+{{^counters}}
+<h1>Нечего показать =(</h1>
+{{/counters}}
+</body>
+</html>
