@@ -26,14 +26,14 @@ class RestController(@Autowired val urep: UserRepository) {
   }
 
   @GetMapping("/logout")
-  fun logout() = "Ну и пошел в жопу"
+  fun logout() = "Мы будем ждеть =)"
 
   @GetMapping("/register")
   fun regForm() = ModelAndView("register")
 
   @PostMapping("/register")
   fun register(@Valid @ModelAttribute("user") user: User?, bindingResult: BindingResult?): String {
-    if (!urep.findByLogin(user?.login).isEmpty())
+    if (urep.findOneByUsername(user?.username) != null)
       return "Уже есть пользователь ${user?.name}"
     urep.save(user);
     return "Добро пожаловать, ${user?.name}"
@@ -54,16 +54,16 @@ data class Credentials(val login: String = "", val password: String = "")
 @Table(name = "user")
 @Component("user")
 data class User(
-    @Id @GeneratedValue(strategy = GenerationType.AUTO) val id: Long? = null,
-    val login: String? = null,
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Int? = null,
+    val username: String? = null,
     val password: String? = null,
     val name: String? = null,
     val birthdate: String? = null) {
   override fun toString(): String {
-    return "login: $login, name: $name${if (!birthdate.isNullOrBlank()) ", birthdate: $birthdate" else ""}"
+    return "login: $username, name: $name${if (!birthdate.isNullOrBlank()) ", birthdate: $birthdate" else ""}"
   }
 }
 
-interface UserRepository : CrudRepository<User, Long> {
-  fun findByLogin(login: String?): List<User>
+interface UserRepository : CrudRepository<User, Int> {
+  fun findOneByUsername(username: String?): User?
 }
