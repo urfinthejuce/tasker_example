@@ -1,19 +1,16 @@
-package ru.tasker.example.hello
+package ru.tasker.example.controller
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.servlet.ModelAndView
-import ru.tasker.example.UserRepository
+import ru.tasker.example.dao.UserRepository
+import ru.tasker.example.dao.CounterRepo
+import ru.tasker.example.model.UserCounter
 import java.util.*
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
 
 @RestController()
 @RequestMapping("/hello")
@@ -40,16 +37,5 @@ class HelloController(@Autowired val cntRepo: CounterRepo, @Autowired val userRe
 class Hello (name: String = "stranger") {
   val content: String = "Hello, $name!"
   override fun toString(): String = content
-}
-
-interface CounterRepo: CrudRepository<UserCounter, Int>
-
-@Entity
-@Table(name = "hello_counter")
-class UserCounter(userId: Int? = null) {
-  @Id
-  @Column(name="user_id")
-  val userId: Int? = userId
-  var counter: Int = 0
 }
 

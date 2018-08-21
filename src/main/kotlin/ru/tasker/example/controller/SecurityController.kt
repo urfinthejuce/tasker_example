@@ -1,24 +1,23 @@
-package ru.tasker.example
+package ru.tasker.example.controller
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Component
+import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.servlet.ModelAndView
-import java.util.*
-import javax.persistence.*
+import ru.tasker.example.dao.UserRepository
+import ru.tasker.example.model.User
 import javax.validation.Valid
 
 @RestController()
-class RestController(@Autowired val urep: UserRepository) {
-  @GetMapping("")
-  fun index() = "<html><h1 style=\"text-align: center\">Дратути!</h1></html>"
-
-  @GetMapping("/login")
-  fun login(@RequestParam(value = "user") user: String?): ModelAndView =
-      ModelAndView("login", Collections.singletonMap("login", user))
+class SecurityController(@Autowired val urep: UserRepository) {
+  @GetMapping("/","/login")
+  fun login(model: Model, @RequestParam(value = "user") user: String?): ModelAndView {
+    model.addAttribute("login", user)
+    return ModelAndView("login", model.asMap())
+  }
 
   @PostMapping("/login")
   fun loguser(@ModelAttribute("Credentials") crd: Credentials): String {
@@ -50,20 +49,3 @@ class RestController(@Autowired val urep: UserRepository) {
 @Component("Credentials")
 data class Credentials(val login: String = "", val password: String = "")
 
-@Entity
-@Table(name = "user")
-@Component("user")
-data class User(
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Int? = null,
-    val username: String? = null,
-    val password: String? = null,
-    val name: String? = null,
-    val birthdate: String? = null) {
-  override fun toString(): String {
-    return "login: $username, name: $name${if (!birthdate.isNullOrBlank()) ", birthdate: $birthdate" else ""}"
-  }
-}
-
-interface UserRepository : CrudRepository<User, Int> {
-  fun findOneByUsername(username: String?): User?
-}
