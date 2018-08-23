@@ -7,7 +7,7 @@ import javax.persistence.*
 class UserCounter(
   @Id
   @Column(name="user_id")
-  val userId: Int? = null,
+  val userId: Int,
   var counter: Int = 0,
   @OneToOne
   @JoinColumn(name="user_id")

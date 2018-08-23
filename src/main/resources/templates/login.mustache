@@ -5,6 +5,9 @@
     <title>Здравствуйте!</title>
 </head>
 <body>
+{{#error}}
+{{error}}
+{{/error}}
 {{#login}}
 <p>Ваш логин: {{login}}</p>
 <p><a href="/logout">Выйти</a></p>

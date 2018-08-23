@@ -1,6 +1,7 @@
 package ru.tasker.example.controller
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -16,7 +17,8 @@ import java.util.*
 @RequestMapping("/hello")
 class HelloController(@Autowired val cntRepo: CounterRepo, @Autowired val userRepo: UserRepository) {
   @GetMapping("")
-  fun hello(@RequestParam(value = "username", defaultValue = "stranger") username: String): ModelAndView {
+  fun hello(): ModelAndView {
+    val username = SecurityContextHolder.getContext().authentication.name
     val user = userRepo.findOneByUsername(username);
     if (user != null) {
       val cnt = cntRepo.findById(user.id).orElse(UserCounter(user.id))
