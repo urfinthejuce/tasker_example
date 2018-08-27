@@ -32,11 +32,11 @@ class RestController(@Autowired val urep: UserRepository) {
   fun regForm() = ModelAndView("register")
 
   @PostMapping("/register")
-  fun register(@Valid @ModelAttribute("user") user: User?, bindingResult: BindingResult?): String {
-    if (!urep.findByLogin(user?.login).isEmpty())
-      return "Уже есть пользователь ${user?.name}"
+  fun register(@Valid @ModelAttribute("user") user: User, bindingResult: BindingResult?): String {
+    if (!urep.findByLogin(user.login).isEmpty())
+      return "Уже есть пользователь ${user.name}"
     urep.save(user);
-    return "Добро пожаловать, ${user?.name}"
+    return "Добро пожаловать, ${user.name}"
   }
 
   @GetMapping("/userlist")
